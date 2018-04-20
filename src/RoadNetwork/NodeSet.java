@@ -1,4 +1,4 @@
-package RoadNetwork;
+package roadNetwork;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,11 +10,11 @@ public class NodeSet {
 	public void readData() {
 		try {
 			String tab=" ";
-			File file=new File("E:\\node.txt");//ÎÄ¼þ
+			File file=new File("E:\\node.txt");//ï¿½Ä¼ï¿½
 			BufferedReader br=new BufferedReader(new FileReader(file));
 			String line=null;
 			while((line=br.readLine())!=null){
-				if(line.equals(""))//Èç¹ûÊÇ¿ÕÐÐ£¬¾ÍÌø¹ý
+				if(line.equals(""))//ï¿½ï¿½ï¿½ï¿½Ç¿ï¿½ï¿½Ð£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		    		continue;
 				else {
 					String data[]=line.split(tab);
@@ -28,7 +28,7 @@ public class NodeSet {
 			br.close();
 		}catch(Exception e) {
 			e.printStackTrace();
-            System.out.println("¶ÁÈ¡ÎÄ¼þ³ö´í");
+            System.out.println("ï¿½ï¿½È¡ï¿½Ä¼ï¿½ï¿½ï¿½ï¿½ï¿½");
 		}
 	}
 

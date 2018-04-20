@@ -1,4 +1,4 @@
-package RoadNetwork;
+package roadNetwork;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +13,11 @@ public class test {
 		 
 		EdgeSet edgeSet=new EdgeSet();
 		edgeSet.readEdge();
-		List<Vertex> vertexs = new ArrayList<Vertex>();
-		for(int i=0;i<nodeSet.nodeList.size();i++) {
-			Vertex v=new Vertex(nodeSet.nodeList.get(i).getNodeId());
-			vertexs.add(v);
-		}
+//		List<Vertex> vertexs = new ArrayList<Vertex>();
+//		for(int i=0;i<nodeSet.nodeList.size();i++) {
+//			Vertex v=new Vertex(nodeSet.nodeList.get(i).getNodeId());
+//			vertexs.add(v);
+//		}
 //	        Vertex a = new Vertex("A", 0);
 //	        Vertex b = new Vertex("B");
 //	        Vertex c = new Vertex("C");
@@ -39,18 +39,18 @@ public class test {
 //	                {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,3,5,Integer.MAX_VALUE}
 //	        
 //	        };
-		    int l=nodeSet.nodeList.size();
-	        double[][] edges=new double[l][l];
-	        for(int j=0;j<nodeSet.nodeList.size();j++) {
-	        	for(int i=0;i<EdgeSet.edgeList.size();i++) {
-	        		int m=EdgeSet.edgeList.get(i).getStartNode();
-	        		int n=EdgeSet.edgeList.get(i).getEndNode();
-	        		edges[m][n]=EdgeSet.edgeList.get(i).getDistance();
-	        	}
-	        }
-	        Graph graph = new Graph(vertexs, edges);
-	        graph.printGraph();
-	        graph.search();
+//		    int l=nodeSet.nodeList.size();
+//	        double[][] edges=new double[l][l];
+//	        for(int j=0;j<nodeSet.nodeList.size();j++) {
+//	        	for(int i=0;i<EdgeSet.edgeList.size();i++) {
+//	        		int m=EdgeSet.edgeList.get(i).getStartNode();
+//	        		int n=EdgeSet.edgeList.get(i).getEndNode();
+//	        		edges[m][n]=EdgeSet.edgeList.get(i).getDistance();
+//	        	}
+//	        }
+//	        Graph graph = new Graph(vertexs, edges);
+//	        graph.printGraph();
+//	        graph.search();
 		
 	}
 

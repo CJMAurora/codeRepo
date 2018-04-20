@@ -1,8 +1,8 @@
 eclipse.preferences.version=1
-encoding//src/Function.java=UTF-8
-encoding//src/GenLoc.java=UTF-8
-encoding//src/PreTree.java=UTF-8
-encoding//src/RanSeq.java=UTF-8
-encoding//src/Rule.java=UTF-8
-encoding//src/Storage.java=UTF-8
-encoding//src/Traj.java=UTF-8
+encoding//src/stoStructure/GenLoc.java=UTF-8
+encoding//src/stoStructure/Storage.java=UTF-8
+encoding//src/stoStructure/Traj.java=UTF-8
+encoding//src/unsafeRule/Function.java=UTF-8
+encoding//src/unsafeRule/PreTree.java=UTF-8
+encoding//src/unsafeRule/RanSeq.java=UTF-8
+encoding//src/unsafeRule/Rule.java=UTF-8

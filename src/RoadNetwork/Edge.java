@@ -1,4 +1,4 @@
-package RoadNetwork;
+package roadNetwork;
 
 public class Edge {
 	private int edgeId;
