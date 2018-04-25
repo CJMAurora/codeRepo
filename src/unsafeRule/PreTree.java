@@ -4,10 +4,10 @@ import java.util.HashMap;
 
 import stoStructure.*;
 
-public class PreTree {
-	private  Node root=new Node();//前缀树的根
-	Node p=root;//p是指针，用来创建和遍历前缀树
-    private void preTree(ArrayList<ArrayList<Integer>> allSubTraj){
+public  class PreTree {
+	private static Node root=new Node();//前缀树的根
+	static Node p=root;//p是指针，用来创建和遍历前缀树
+    private static void preTree(ArrayList<ArrayList<Integer>> allSubTraj){
 		
 		for(int i=0;i<allSubTraj.size();i++){
 			ArrayList<Integer> subTraj=allSubTraj.get(i);
@@ -40,7 +40,7 @@ public class PreTree {
 			}
 		}
 	}
-    public void genPreTree(ArrayList<Traj> trajList){//给定一个人的轨迹，得到其生成的前缀树
+    public static void genPreTree(ArrayList<Traj> trajList){//给定一个人的轨迹，得到其生成的前缀树
     	Function f=new Function();
 		for(int b=0;b<trajList.size();b++){
 			ArrayList<Lv> lvList=trajList.get(b).getLvList();

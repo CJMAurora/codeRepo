@@ -8,90 +8,134 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
+import stoStructure.Storage;
+import stoStructure.Traj;
+
+/**
+ * 
+ * @author Aurora
+ *该类完成的功能对一个点与其所有可达点的距离进行排序
+ *首先从文件中读出两点之间的距离信息
+ *然后按照设定的类格式对其进行存储
+ *最后用sort方法进行排序
+ */
 
 public class DisInfo {
-	//public static ArrayList<Dist> distList=new ArrayList<>();
-	//HashMap<Integer,Double> distMap=new HashMap<>();
-	public static HashMap<Integer,HashMap<Integer,Double>> disInfo=new HashMap<>();
-	public static void setDistList(int userId) {
-		String path="F:\\trajPrivacy\\distance\\"+userId+".txt";
-		String tab=" ";
-		try{
-			File file=new File(path);
-			BufferedReader br = new BufferedReader(new FileReader(file));//br是字符流
-		    String line = null;
-		    while((line=br.readLine())!=null){
-		    	String[] data=line.split(tab);
-		    	int loc1=Integer.parseInt(data[0]);
-		    	int loc2=Integer.parseInt(data[1]);
-		    	double dist=Double.parseDouble(data[2]);
-		    	if(disInfo.containsKey(loc1)) {
-		    		HashMap<Integer,Double> distMap=disInfo.get(loc1);
-		    		if(!distMap.containsKey(loc2)) {
-		    			distMap.put(loc2, dist);
-		    			disInfo.put(loc1, distMap);
-		    		}
-		    	}
-		       if(disInfo.containsKey(loc2)) {
-		    		HashMap<Integer,Double> distMap=disInfo.get(loc2);
-		    		if(!distMap.containsKey(loc1)) {
-		    			distMap.put(loc1, dist);
-		    			disInfo.put(loc2, distMap);
-		    		}
-		    	}
-		    	else {
-		    	    HashMap<Integer,Double> distMap1=new HashMap<>();
-		    	    distMap1.put(loc2, dist);
-		    	    disInfo.put(loc1, distMap1);
-		    	    HashMap<Integer,Double> distMap2=new HashMap<>();
-		    	    distMap2.put(loc1, dist);
-		    	    disInfo.put(loc2, distMap2);
-		    	}
-		    }
-			br.close();
-		}catch(Exception e){
-			e.printStackTrace();
-            System.out.println("读取文件出错");
-		}
-		Iterator<Map.Entry<Integer, HashMap<Integer,Double>>> iterator2 = disInfo.entrySet().iterator();
-	    while(iterator2.hasNext()){
-	   	     Map.Entry<Integer, HashMap<Integer,Double>> entry = iterator2.next();
-	       	List<Map.Entry<Integer,Double>> list=new ArrayList<>();  
-            list.addAll(entry.getValue().entrySet());  
-            DisInfo.ValueComparator vc=new ValueComparator();  
-            Collections.sort(list,vc); 
-	        System.out.println(entry.getKey());
-	        for(Iterator<Map.Entry<Integer,Double>> it=list.iterator();it.hasNext();)  
-	        {  
-	            System.out.println(it.next());  
-	        } 
-	    }
-	}
-	 
-	private static class ValueComparator implements Comparator<Map.Entry<Integer,Double>>  
-    {  
-        public int compare(Map.Entry<Integer,Double> m,Map.Entry<Integer,Double> n)  
-        {  
-        	if(m.getValue() >  n.getValue())
-                return 1;
-            else if(m.getValue() < n.getValue())
-                return -1;
-            return 0;
-        }  
-    } 
-	
+	public static HashMap<Integer, ArrayList<Dist>> disInfo = new HashMap<>();
 
+	public static void setDisInfo(int userId) {
+		String path = "F:\\trajPrivacy\\distance\\" + userId + ".txt";
+		String tab = " ";
+		String line=null;
+		try {
+			File file = new File(path);
+			BufferedReader br = new BufferedReader(new FileReader(file));// br是字符流
+			//String line = null;
+			while ((line = br.readLine()) !=null) {
+				String[] data = line.split(tab);
+				int loc1 = Integer.parseInt(data[0]);
+				int loc2 = Integer.parseInt(data[1]);
+				double dist = Double.parseDouble(data[2]);
+				if (disInfo.containsKey(loc1)) {
+					ArrayList<Dist> distList = disInfo.get(loc1);
+					int sign = 0;
+					for (int i = 0; i < distList.size(); i++) {
+						if (distList.get(i).getLoc() == loc2) {
+							sign = 1;
+							break;
+						}
+					}
+					if (sign == 0) {
+						Dist d = new Dist();
+						d.setLoc(loc2);
+						d.setDist(dist);
+						distList.add(d);
+					}
+				}
+				if (disInfo.containsKey(loc2)) {
+					ArrayList<Dist> distList = disInfo.get(loc2);
+					int sign = 0;
+					for (int i = 0; i < distList.size(); i++) {
+						if (distList.get(i).getLoc() == loc1) {
+							sign = 1;
+							break;
+						}
+					}
+					if (sign == 0) {
+						Dist d = new Dist();
+						d.setLoc(loc1);
+						d.setDist(dist);
+						distList.add(d);
+					}
+				} else {
+					Dist d1 = new Dist();
+					d1.setLoc(loc2);
+					d1.setDist(dist);
+					ArrayList<Dist> distList1 = new ArrayList<>();
+					distList1.add(d1);
+					disInfo.put(loc1, distList1);
+					Dist d2 = new Dist();
+					d2.setLoc(loc1);
+					d2.setDist(dist);
+					ArrayList<Dist> distList2 = new ArrayList<>();
+					distList2.add(d2);
+					disInfo.put(loc2, distList2);
+				}
+			}
+			br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(line);
+			System.out.println("读取文件出错");
+		}
+		/**
+		 * 将ArrayList<Dist>进行排序（从小到大）
+		 */
+		Iterator<Map.Entry<Integer, ArrayList<Dist>>> iterator2 = disInfo.entrySet().iterator();
+		int num=0;
+		while (iterator2.hasNext()) {
+			num++;
+			Map.Entry<Integer, ArrayList<Dist>> entry = iterator2.next();
+			System.out.println(entry.getKey());
+			Collections.sort(entry.getValue());
+			System.out.println(num);
+			System.out.println(entry.getValue().size());
+			for (int i = 0; i < entry.getValue().size(); i++) {
+				System.out.println(entry.getValue().get(i).getLoc() + " " + entry.getValue().get(i).getDist());
+			}
+		}
+	}
 }
 
-//class Dist{
-//	private HashMap<Integer,Double> distMap=new HashMap<>();
-//	public HashMap<Integer, Double> getDistMap() {
-//		return distMap;
-//	}
-//	public void setDistMap(HashMap<Integer, Double> distMap) {
-//		this.distMap = distMap;
-//	} 
-//	
-//}
+class Dist implements Comparable<Dist> {
+	private int loc;
+	private double dist;
+
+	public int getLoc() {
+		return loc;
+	}
+
+	public void setLoc(int loc) {
+		this.loc = loc;
+	}
+
+	public double getDist() {
+		return dist;
+	}
+
+	public void setDist(double dist) {
+		this.dist = dist;
+	}
+
+	@Override
+	public int compareTo(Dist arg0) {
+		// TODO Auto-generated method stub
+		if (this.dist > arg0.dist)
+			return 1;
+		else if (this.dist < arg0.dist)
+			return -1;
+		return 0;
+	}
+
+}

@@ -5,6 +5,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import roadNetwork.Node;
+import roadNetwork.NodeSet;
 import stoStructure.*;
 
 /**
@@ -26,7 +28,7 @@ public class PutFile {
 		if(!f.exists()) {
 			f.mkdirs();
 		}
-		String fileName=s.userInfoList.get(id).getId()+".txt";//以用户的id命名
+		String fileName=s.userInfoList.get(id).getId()+"副本"+".txt";//以用户的id命名
 		File file=new File(f,fileName);//创建文件
 		FileWriter fw=null;
 		if(!file.exists()) {
@@ -40,8 +42,10 @@ public class PutFile {
 		double dist;
 		String context;
 		for(int i=0;i<locList.size()-1;i++) {
+			NearestE ne1=d.PtE(locList.get(i),1.5f);
 			for(int j=i+1;j<locList.size();j++) {
-				dist=d.disbP(locList.get(i), locList.get(j), 1.5f);
+				NearestE ne2=d.PtE(locList.get(j),1.5f);
+				dist=d.disbP(ne1, ne2, 1.5f);
 				context=locList.get(i)+" "+locList.get(j)+" "+dist+"\r\n";
 				System.out.println("点"+locList.get(i)+"到点"+locList.get(j)+"的距离为："+dist);
 				try {
@@ -86,5 +90,6 @@ public class PutFile {
 		}
 		return locList;
 	}
+
 
 }

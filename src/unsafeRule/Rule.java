@@ -92,15 +92,10 @@ public class Rule {
 		}
 		return rList;
 	}
+	public int  PointPre(int loc) {
+		PreTree p=new PreTree();
+		return p.PointPre(loc);
+	}
 
 }
-class suppTraj{
-	ArrayList<Integer> traj;
-	int count;
-}
-class R{
-	int rId;
-	suppTraj trajNume;
-	suppTraj trajDemo;
-	float conf;
-}
+

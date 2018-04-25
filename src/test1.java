@@ -27,9 +27,9 @@ public class test1 {
 			ArrayList<Lv> lvList=trajList.get(i).getLvList();
 			for(int j=0;j<lvList.size();j++) {
 				for(int k=j+1;k<lvList.size();k++) {
-					dist=d.disbP(lvList.get(j).getLoc(), lvList.get(k).getLoc(), 1.5f);
-					System.out.println("点"+lvList.get(j).getLoc()+"到点"+lvList.get(k).getLoc()+"的距离为："+dist);
-					String con=lvList.get(j).getLoc()+" "+lvList.get(k).getLoc()+" "+dist+"\r\n";
+					//dist=d.disbP(lvList.get(j).getLoc(), lvList.get(k).getLoc(), 1.5f);
+					//System.out.println("点"+lvList.get(j).getLoc()+"到点"+lvList.get(k).getLoc()+"的距离为："+dist);
+					//String con=lvList.get(j).getLoc()+" "+lvList.get(k).getLoc()+" "+dist+"\r\n";
 					
 				}
 				

@@ -135,10 +135,10 @@ public class Distance {
 		//System.out.println(ne.eId+" "+ne.startE+" "+ne.endE+" "+ne.dis+" "+ne.d1+" "+ne.d2);
 		return ne;
 	}
-	public double disbP(int p1,int p2,float thed) {
+	public double disbP(NearestE ne1,NearestE ne2,float thed) {
 		double dist=0;
-		NearestE ne1=PtE(p1,thed);
-		NearestE ne2=PtE(p2,thed);
+//		NearestE ne1=PtE(p1,thed);
+//		NearestE ne2=PtE(p2,thed);
 		int[] ep=new int[4];
 		ep[0]=ne1.startE;
 		ep[1]=ne1.endE;
@@ -161,21 +161,30 @@ public class Distance {
 				}
 			}
 		}
-		if(index1==0) {
-			if(index2==2) {
-				dist=ne1.dis+ne1.d1+dmin+ne2.dis+ne2.d1;
+		if(dmin==0) {
+			if(ne1.d1>ne2.d1) {
+				dist=ne1.d1-ne2.d1+ne1.dis+ne2.dis;
 			}
-	        if(index2==3) {
-	        	dist=ne1.dis+ne1.d1+dmin+ne2.dis+ne2.d2;
-	        }
-	     }
-		if(index1==1) {
-			if(index2==2) {
-				dist=ne1.dis+ne1.d2+dmin+ne2.dis+ne2.d1;
+			else
+				dist=ne2.d1-ne1.d1+ne1.dis+ne2.dis;
+		}
+		else {
+			if(index1==0) {
+				if(index2==2) {
+					dist=ne1.dis+ne1.d1+dmin+ne2.dis+ne2.d1;
+				}
+		        if(index2==3) {
+		        	dist=ne1.dis+ne1.d1+dmin+ne2.dis+ne2.d2;
+		        }
+		     }
+			if(index1==1) {
+				if(index2==2) {
+					dist=ne1.dis+ne1.d2+dmin+ne2.dis+ne2.d1;
+				}
+		        if(index2==3) {
+		        	dist=ne1.dis+ne1.d2+dmin+ne2.dis+ne2.d2;
+		        }
 			}
-	        if(index2==3) {
-	        	dist=ne1.dis+ne1.d2+dmin+ne2.dis+ne2.d2;
-	        }
 		}
 		System.out.println(dist);
         return dist;

@@ -16,7 +16,7 @@ public class testPutFile {
 		e.readEdge();
 		n.readData();
 		String path="F:\\trajPrivacy\\distance\\";
-		PutFile pf=new PutFile(0,path);
+		PutFile pf=new PutFile(2,path);
 		ArrayList<Integer> locList= pf.getLocList();
 		for(int i=0;i<locList.size();i++) {
 			System.out.println(locList.get(i));
