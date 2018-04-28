@@ -53,6 +53,14 @@ public class DisInfo {
 						distList.add(d);
 					}
 				}
+				else {
+					Dist d1 = new Dist();
+					d1.setLoc(loc2);
+					d1.setDist(dist);
+					ArrayList<Dist> distList1 = new ArrayList<>();
+					distList1.add(d1);
+					disInfo.put(loc1, distList1);
+				}
 				if (disInfo.containsKey(loc2)) {
 					ArrayList<Dist> distList = disInfo.get(loc2);
 					int sign = 0;
@@ -69,12 +77,6 @@ public class DisInfo {
 						distList.add(d);
 					}
 				} else {
-					Dist d1 = new Dist();
-					d1.setLoc(loc2);
-					d1.setDist(dist);
-					ArrayList<Dist> distList1 = new ArrayList<>();
-					distList1.add(d1);
-					disInfo.put(loc1, distList1);
 					Dist d2 = new Dist();
 					d2.setLoc(loc1);
 					d2.setDist(dist);

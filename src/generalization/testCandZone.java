@@ -10,7 +10,7 @@ public class testCandZone {
 		Storage s=new Storage();
 		s.putDataFromFile();
 		s.storageDate();
-		ArrayList<Lv> lvList=s.userInfoList.get(0).getTrajList().get(0).getLvList();
+		ArrayList<Lv> lvList=s.userInfoList.get(2).getTrajList().get(30).getLvList();
 		CandZone cz=new CandZone();
 		cz.getCandZone(lvList, 0.032424025, 2);
 	}

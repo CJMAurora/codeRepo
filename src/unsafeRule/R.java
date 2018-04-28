@@ -1,7 +1,11 @@
 package unsafeRule;
 
 import java.util.ArrayList;
-
+/**
+ * 
+ * @author Aurora
+ *不安全规则类
+ */
 public class R {
 	int rId;
 	suppTraj trajNume;
@@ -33,8 +37,4 @@ public class R {
 	}
 	
 
-}
-class suppTraj{
-	ArrayList<Integer> traj;
-	int count;
 }

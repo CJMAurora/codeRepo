@@ -45,7 +45,7 @@ public class Rule {
 		ArrayList<Traj> trajList=userInfoList.get(id).getTrajList();
 		int userId=userInfoList.get(id).getId();
 		ArrayList<Integer> senPList=getSenP(userId);
-		p.genPreTree(trajList);
+		PreTree.genPreTree(trajList);
 		int sum=0;//用来记录id号
 		for(int i=0;i<trajList.size();i++){//遍历用户每天的轨迹
 			ArrayList<Lv> lvList=trajList.get(i).getLvList();//得到其一天的访问点序列
@@ -64,16 +64,16 @@ public class Rule {
 				}
 				float a=p.trajFre(trajNume);//支持轨迹的个数
 				float b=p.trajFre(trajDemo);//条件轨迹的个数
-				if(b>0){//分母不为0时进行操作
+				if(b>1){//分母不为0时进行操作，分母大于1过滤分子，分母全是1的不安全关联
 					float c=a/b;
 					//System.out.println(a+" "+b+" "+c);
 					if(c>conf){//若比值大于给定阈值，将其加入到rList中
 						suppTraj supptraj1=new suppTraj();
 						supptraj1.traj=trajNume;
-						supptraj1.count=(int)a;
+						supptraj1.count=a;
 						suppTraj supptraj2=new suppTraj();
 						supptraj2.traj=trajDemo;
-						supptraj2.count=(int)b;
+						supptraj2.count=b;
 						R r=new R();
 						r.rId=sum;
 						r.trajNume=supptraj1;
