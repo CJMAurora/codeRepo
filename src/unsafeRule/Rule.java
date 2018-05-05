@@ -2,6 +2,7 @@ package unsafeRule;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import stoStructure.*;
@@ -15,10 +16,10 @@ import stoStructure.*;
  *若c>conf(给定的阈值) 就把这条轨迹的信息添加到R中
  */
 
-public class Rule {
+public class Rule{
 	
 	private ArrayList<Integer> getSenP(int id){
-		String path="F:\\trajPrivacy\\ranSeq\\"+id+".txt";
+		String path="F:\\trajPrivacy\\ranSeq\\"+id+"测试机.txt";
 		String tab="\t";
 		ArrayList<Integer> senPoint=new ArrayList<>();
 		try{
@@ -50,8 +51,7 @@ public class Rule {
 		for(int i=0;i<trajList.size();i++){//遍历用户每天的轨迹
 			ArrayList<Lv> lvList=trajList.get(i).getLvList();//得到其一天的访问点序列
 			int senP=senPList.get(i);//得到该天的敏感点
-			System.out.println("senP的值为："+senP);
-			//int senP=trajList.get(i).getLvList().get(x).getLoc();//得到该天的敏感地点
+			//System.out.println("senP的值为："+senP);
 			ArrayList<ArrayList<Integer>> senTraj=f.getSenTraj(lvList, senP);//包含敏感点的所有轨迹
 			for(int j=0;j<senTraj.size();j++){
 				ArrayList<Integer> trajNume=senTraj.get(j);//支持轨迹
@@ -62,10 +62,10 @@ public class Rule {
 					else
 						trajDemo.add(trajNume.get(k));
 				}
-				float a=p.trajFre(trajNume);//支持轨迹的个数
-				float b=p.trajFre(trajDemo);//条件轨迹的个数
+				double a=p.trajFre(trajNume);//支持轨迹的个数
+				double b=p.trajFre(trajDemo);//条件轨迹的个数
 				if(b>1){//分母不为0时进行操作，分母大于1过滤分子，分母全是1的不安全关联
-					float c=a/b;
+				double c=a/b;
 					//System.out.println(a+" "+b+" "+c);
 					if(c>conf){//若比值大于给定阈值，将其加入到rList中
 						suppTraj supptraj1=new suppTraj();

@@ -6,7 +6,7 @@ import stoStructure.*;
 
 public class Q {
 	private Op op;
-	private double infoLoss;
+	private double infoLoss=1;
 	private double anonyGain;
 	private double score;
 	public Op getOp() {

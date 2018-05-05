@@ -28,7 +28,7 @@ public class PutFile {
 		if(!f.exists()) {
 			f.mkdirs();
 		}
-		String fileName=s.userInfoList.get(id).getId()+"副本"+".txt";//以用户的id命名
+		String fileName=s.userInfoList.get(id).getId()+"测试集"+".txt";//以用户的id命名
 		File file=new File(f,fileName);//创建文件
 		FileWriter fw=null;
 		if(!file.exists()) {

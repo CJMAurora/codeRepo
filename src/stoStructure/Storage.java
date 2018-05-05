@@ -20,8 +20,8 @@ public class Storage {
 		public  void putDataFromFile(){//将数据从文件中读取出来，并分别放到各个数组中
 			try{
 				String tab="\t";
-			   File file = new File("E:\\Gowalla_totalCheckins.txt");//文件
-			    //File file = new File("E:\\test.txt");//文件
+			  // File file = new File("E:\\Gowalla_totalCheckins.txt");//文件
+			    File file = new File("E:\\test.txt");//文件
 				//File file =new File(E:\\test.txt");
 			    BufferedReader br = new BufferedReader(new FileReader(file));//br是字符流
 			    String line = null;

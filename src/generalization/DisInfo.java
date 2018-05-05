@@ -25,7 +25,7 @@ public class DisInfo {
 	public static HashMap<Integer, ArrayList<Dist>> disInfo = new HashMap<>();
 
 	public static void setDisInfo(int userId) {
-		String path = "F:\\trajPrivacy\\distance\\" + userId + ".txt";
+		String path = "F:\\trajPrivacy\\distance\\" + userId + "测试集.txt";
 		String tab = " ";
 		String line=null;
 		try {
@@ -99,13 +99,13 @@ public class DisInfo {
 		while (iterator2.hasNext()) {
 			num++;
 			Map.Entry<Integer, ArrayList<Dist>> entry = iterator2.next();
-			System.out.println(entry.getKey());
+			//System.out.println(entry.getKey());
 			Collections.sort(entry.getValue());
-			System.out.println(num);
-			System.out.println(entry.getValue().size());
-			for (int i = 0; i < entry.getValue().size(); i++) {
-				System.out.println(entry.getValue().get(i).getLoc() + " " + entry.getValue().get(i).getDist());
-			}
+			//System.out.println(num);
+			//System.out.println(entry.getValue().size());
+//			for (int i = 0; i < entry.getValue().size(); i++) {
+//				System.out.println(entry.getValue().get(i).getLoc() + " " + entry.getValue().get(i).getDist());
+//			}
 		}
 	}
 }

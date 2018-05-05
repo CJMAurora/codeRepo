@@ -1,16 +1,18 @@
 package unsafeRule;
 
-import java.util.ArrayList;
+import java.io.Serializable;
+
 /**
  * 
  * @author Aurora
  *不安全规则类
  */
-public class R {
+//可以被序列化
+public class R implements Serializable {
 	int rId;
 	suppTraj trajNume;
 	suppTraj trajDemo;
-	float conf;
+	double conf;
 	public int getrId() {
 		return rId;
 	}
@@ -29,10 +31,10 @@ public class R {
 	public void setTrajDemo(suppTraj trajDemo) {
 		this.trajDemo = trajDemo;
 	}
-	public float getConf() {
+	public double getConf() {
 		return conf;
 	}
-	public void setConf(float conf) {
+	public void setConf(double conf) {
 		this.conf = conf;
 	}
 	
