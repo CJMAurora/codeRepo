@@ -16,7 +16,8 @@ public class testCandZone {
 //		for(int i=0;i<trajList.size();i++) {
 //			gc.getGencand(trajList.get(i).getLvList(), 0.032424025, 2);
 //		}
-	    gc.suppress(trajList);
+	   // gc.suppress(trajList);
+	    gc.getQList(trajList);
 		//cz.getCandZone(lvList, 0.032424025, 2);
 	}
 
