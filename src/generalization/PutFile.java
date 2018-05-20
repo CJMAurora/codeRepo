@@ -28,7 +28,7 @@ public class PutFile {
 		if(!f.exists()) {
 			f.mkdirs();
 		}
-		String fileName=s.userInfoList.get(id).getId()+"测试集"+".txt";//以用户的id命名
+		String fileName=s.userInfoList.get(id).getId()+".txt";//以用户的id命名
 		File file=new File(f,fileName);//创建文件
 		FileWriter fw=null;
 		if(!file.exists()) {
@@ -67,6 +67,7 @@ public class PutFile {
 		}
 		
 	}
+	//得到用户总共经历了多少个地点
 	public ArrayList<Integer> getLocList(){
 		Storage s=new Storage();
 		ArrayList<Traj> trajList=s.userInfoList.get(id).getTrajList();

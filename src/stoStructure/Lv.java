@@ -1,4 +1,5 @@
 package stoStructure;
+import java.io.Serializable;
 import java.util.ArrayList;
 /**
  * 
@@ -6,7 +7,7 @@ import java.util.ArrayList;
  *用来存储用户的访问点，包括时间和位置
  */
 
-public class Lv { 
+public class Lv implements Serializable{ 
 	private int hour;
 	private int min;
 	private GenLoc genLoc=new GenLoc();

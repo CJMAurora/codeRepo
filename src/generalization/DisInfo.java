@@ -25,7 +25,7 @@ public class DisInfo {
 	public static HashMap<Integer, ArrayList<Dist>> disInfo = new HashMap<>();
 
 	public static void setDisInfo(int userId) {
-		String path = "F:\\trajPrivacy\\distance\\" + userId + "测试集.txt";
+		String path = "F:\\trajPrivacy\\distance\\" + userId + ".txt";
 		String tab = " ";
 		String line=null;
 		try {

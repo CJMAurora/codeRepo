@@ -19,7 +19,7 @@ import stoStructure.*;
 public class Rule{
 	
 	public ArrayList<Integer> getSenP(int id){
-		String path="F:\\trajPrivacy\\ranSeq\\"+id+"测试机.txt";
+		String path="F:\\trajPrivacy\\ranSeq\\"+id+".txt";
 		String tab="\t";
 		ArrayList<Integer> senPoint=new ArrayList<>();
 		try{

@@ -1,5 +1,6 @@
 package generalization;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import roadNetwork.EdgeSet;
@@ -8,12 +9,10 @@ import stoStructure.Storage;
 /**
  * 
  * @author Aurora
- *程序运行的第二步，先得到用户经过的地点任意两点之间的距离
- *注意id指的是不是用户id
+ *工程的第一步，先得到用户的随机敏感点，运行类RanSeq
  */
-
-public class testPutFile {
-	public static void main(String[] args) {
+public class testTrajAnony {
+	public static void main(String[] args) throws ClassNotFoundException, IOException {
 		Storage s=new Storage();
 		s.putDataFromFile();
 		s.storageDate();
@@ -21,13 +20,16 @@ public class testPutFile {
 		NodeSet n=new NodeSet();
 		e.readEdge();
 		n.readData();
-		String path="F:\\trajPrivacy\\distance\\";
-		PutFile pf=new PutFile(0,path);//此处id不是用户id
+		//第二步，运行PutFIle函数，把用户任意两点之间的距离存起来
+//		String path="F:\\trajPrivacy\\distance\\";
+//		PutFile pf=new PutFile(0,path);//此处id不是用户id
 //		ArrayList<Integer> locList= pf.getLocList();
 //		for(int i=0;i<locList.size();i++) {
 //			System.out.println(locList.get(i));
 //		}
-		pf.writeFile();
+//		pf.writeFile();
+		TrajAnony ta=new TrajAnony();
+		ta.update();
 	}
 
 }

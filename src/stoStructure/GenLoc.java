@@ -1,4 +1,5 @@
 package stoStructure;
+import java.io.Serializable;
 import java.util.ArrayList;
 /**
  * 
@@ -7,7 +8,7 @@ import java.util.ArrayList;
  *泛化的地点放在locList中
  */
 
-public class GenLoc {
+public class GenLoc implements Serializable{
 	private int singleId;//如果是一个地址，就存在singleId中
 	ArrayList<Integer> locList;//如果还有多个地址，就放在locList中
 	public int getSingleId() {

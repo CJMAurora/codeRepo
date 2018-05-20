@@ -9,7 +9,7 @@ import stoStructure.*;
 /**
  * 
  * @author Aurora
- * 程序运行的第二步，生成用户的敏感地点
+ * 程序运行的第一步，生成用户的敏感地点
  *该类的功能是针对某用户的轨迹，随机生成敏感位置点
  *然后把生成的敏感位置点存入文件
  */
@@ -23,9 +23,9 @@ public class RanSeq{
 		if(!f.exists()){
 			f.mkdirs();
 		}
-		int userId=s.userInfoList.get(0).getId();//得到用户的id
+		int userId=s.userInfoList.get(0).getId();//得到用户的id，这是主要变量
 		ArrayList<Traj> trajList=s.userInfoList.get(0).getTrajList();//得到某个用户的轨迹
-		String fileName= userId+"测试机.txt";//使用用户id做文件的名称，创建文件
+		String fileName= userId+".txt";//使用用户id做文件的名称，创建文件
 		File file=new File(f,fileName); 
 		FileWriter fw=null;
 		PreTree p=new PreTree();

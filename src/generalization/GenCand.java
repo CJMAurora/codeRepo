@@ -17,19 +17,22 @@ import unsafeRule.Rule;
 
 public class GenCand {
 	Rule r=new Rule();
-	ArrayList<R> rlist=r.genRList(0, 0.5f);//得到用户的不安全规则
+	ArrayList<R> rlist;//得到用户的不安全规则
+	public GenCand(ArrayList<R> rlist) {
+		this.rlist=rlist;
+	}
 	public static ArrayList<Q> qList=new ArrayList<Q>();
 	public void getGencand(ArrayList<Traj> trajList,double v,int a) throws ClassNotFoundException, IOException {
 		for(int t=0;t<trajList.size();t++) {
 			ArrayList<Lv> lvList=trajList.get(t).getLvList();
-			DisInfo.setDisInfo(0);//得到用户的距离信息（此处id放入用户id）
+			DisInfo.setDisInfo(4);//得到用户的距离信息（此处id放入用户id）
 			HashMap<Integer, ArrayList<Dist>> disInfo=DisInfo.disInfo;
 			//得到用户的不安全规则（此处的id放入序号id）
 //			for(int k=0;k<rlist.size();k++) {
 //				System.out.println(rlist.get(k).getrId()+" "+rlist.get(k).getTrajNume()+"  "+rlist.get(k).getTrajDemo()+" "+rlist.get(k).getConf());
 //			}
 			if(lvList.size()==1) {
-				System.out.println("该轨迹只有一个点不用泛化");
+				//System.out.println("该轨迹只有一个点不用泛化");
 			}
 			else {
 				for(int i=0;i<lvList.size();i++) {
@@ -43,11 +46,22 @@ public class GenCand {
 						for(int j=0;j<distList.size();j++) {
 							if(distList.get(j).getDist()<=thed) {
 								if(r.PointPre(distList.get(j).getLoc())>=a) {
-									ArrayList<R> rlistCopy=deepCopy(rlist);
-									int label=rChange(rlistCopy,lvList.get(i).getLoc(),distList.get(j).getLoc(),lvList);
-									if(label==0) {
-										candList.add(distList.get(j).getLoc());//得到候选地点
-									}
+									int tag=0;
+									//用来泛化的地点不能是用户今天走过的地点
+								    for(int f=0;f<lvList.size();f++) {
+								    	if(distList.get(j).getLoc()==lvList.get(f).getLoc()) {
+								    		tag=1;
+								    		break;
+								    	}	
+								    }
+								    if(tag==0) {
+								    	ArrayList<R> rlistCopy=deepCopy(rlist);
+										int label=rChange(rlistCopy,lvList.get(i).getLoc(),distList.get(j).getLoc(),lvList);
+										if(label==0) {
+											candList.add(distList.get(j).getLoc());//得到候选地点
+										}
+								    }
+									
 								}
 							}
 						}
@@ -106,19 +120,19 @@ public class GenCand {
 				        
 					}
 					//得到地点的候选泛化点后，计算每个候选点的score值，然后放到qList中
-					System.out.println("点"+lvList.get(i).getLoc()+"的泛化点为");
+					//System.out.println("点"+lvList.get(i).getLoc()+"的泛化点为");
 					for(int j=0;j<candList.size();j++) {
 						ArrayList<R> rlistCopy=deepCopy(rlist);
-						System.out.println(candList.get(j));
+						//System.out.println(candList.get(j));
 						Op op=new Op();
 						op.setLocId(lvList.get(i).getLoc());
 						op.setGenLoc(candList.get(j));
 						op.setTrajId(t);
 						Q q=new Q();
 						q.setOp(op);
-						System.out.println("候选匿名点为："+candList.get(j));
+						//System.out.println("候选匿名点为："+candList.get(j));
 						double anonyGain=getAnonyGain(rlistCopy,lvList.get(i).getLoc(),candList.get(j),0.5,lvList);
-						System.out.println("匿名收益为："+anonyGain);
+						//System.out.println("匿名收益为："+anonyGain);
 						q.setAnonyGain(anonyGain);
 						q.setScore(anonyGain);//因为预泛化的时候只是用一个点去泛化，信息损失为1，所以score=anonyGain
 						qList.add(q);
@@ -203,12 +217,23 @@ public class GenCand {
 			return 1;
 	}
 	private double getAnonyGain(ArrayList<R> rlistCopy,int l1,int l2,double thed,ArrayList<Lv> lvList) {
-		ArrayList<Integer> list=new ArrayList<>();
+		ArrayList<Integer> beforeList=new ArrayList<>();
+		ArrayList<Integer> afterList=new ArrayList<>();
+		//泛化之前的轨迹
 	    for(int i=0;i<lvList.size();i++) {
-	    	list.add(lvList.get(i).getLoc());
+	    	beforeList.add(lvList.get(i).getLoc());
+	    }
+	    //泛化后产生的轨迹
+	    for(int i=0;i<lvList.size();i++) {
+	    	if(lvList.get(i).getLoc()==l1) {
+	    		afterList.add(l2);
+	    	}
+	    	else{
+	    		afterList.add(lvList.get(i).getLoc());
+	    	}
 	    }
 		for(int k=0;k<rlistCopy.size();k++) {
-			boolean flag1=list.containsAll(rlistCopy.get(k).getTrajNume().getTraj());
+			boolean flag1=beforeList.containsAll(rlistCopy.get(k).getTrajNume().getTraj());
 			//如果r的分子包含在list中
 			if(flag1==true) {
 				//r的规则中的分子含有被泛化的地点的话，这条规则的条数就减0.5
@@ -216,6 +241,10 @@ public class GenCand {
 				if(flag2==true) {
 					rlistCopy.get(k).getTrajNume().setCount(rlistCopy.get(k).getTrajNume().getCount()-0.5);
 				}
+				
+			}
+			boolean flag7=afterList.containsAll(rlistCopy.get(k).getTrajNume().getTraj());
+			if(flag7==true) {
 				//r的规则中的分子中含用来泛化的地点，这条规则的条数就加0.5
 				boolean flag3=rlistCopy.get(k).getTrajNume().getTraj().contains(l2);
 				if(flag3==true) {
@@ -223,13 +252,17 @@ public class GenCand {
 				}
 			}
 			//如果r的分母包含在list中
-			boolean flag4=list.containsAll(rlistCopy.get(k).getTrajDemo().getTraj());
+			boolean flag4=beforeList.containsAll(rlistCopy.get(k).getTrajDemo().getTraj());
 			if(flag4==true) {
 				//r的规则中的分子含有被泛化的地点的话，这条规则的条数就减0.5
 				boolean flag5=rlistCopy.get(k).getTrajDemo().getTraj().contains(l1);
 				if(flag5==true) {
 					rlistCopy.get(k).getTrajDemo().setCount(rlistCopy.get(k).getTrajDemo().getCount()-0.5);
 				}
+				
+			}
+			boolean flag8=afterList.containsAll(rlistCopy.get(k).getTrajDemo().getTraj());
+			if(flag8==true) {
 				//r的规则中的分子中含用来泛化的地点，这条规则的条数就加0.5
 				boolean flag6=rlistCopy.get(k).getTrajDemo().getTraj().contains(l2);
 				if(flag6==true) {
@@ -258,45 +291,52 @@ public class GenCand {
 	}
 	public void suppress(ArrayList<Traj> trajList) throws ClassNotFoundException, IOException {
 		int count=locSize(trajList);//得到用户的地点访问个数
+		
 		for(int i=0;i<trajList.size();i++) {
-			//得到轨迹的地点
-			ArrayList<Integer> locList=new ArrayList<>();
-			for(int j=0;j<trajList.get(i).getLvList().size();j++) {
-				locList.add(trajList.get(i).getLvList().get(j).getLoc());
+			if(trajList.size()==1) {
+				continue;
+			}
+			else {
+				//得到轨迹的地点
+				ArrayList<Integer> locList=new ArrayList<>();
+				for(int j=0;j<trajList.get(i).getLvList().size();j++) {
+					locList.add(trajList.get(i).getLvList().get(j).getLoc());
+				}
+				
+				for(int j=0;j<rlist.size();j++) {
+					ArrayList<R> rlistCopy=deepCopy(rlist);
+					ArrayList<Integer> list=new ArrayList<>(rlist.get(j).getTrajNume().getTraj());
+					//list=rlist.get(j).getTrajNume().getTraj();//得到分子的轨迹
+					//如果用户的这条轨迹包含r中的轨迹
+					if(locList.containsAll(list)) {
+						list.removeAll(rlist.get(j).getTrajDemo().getTraj());
+						//得到敏感地点
+						int senLoc=list.get(0);
+						Op op=new Op();
+						op.setLocId(senLoc);
+						op.setTrajId(i);
+						int tag=0;
+						for(int k=0;k<qList.size();k++) {
+							if(op.equals(qList.get(k).getOp())) {
+								tag=1;
+								break;
+							}
+						}
+						if(tag==0) {
+							double anonyGain=annoyGainS(rlistCopy,senLoc,0.5,locList);
+							double infoLoss=Math.log(count)/Math.log(2);
+							double score=anonyGain/infoLoss;
+							Q q=new Q();
+							q.setOp(op);
+							q.setAnonyGain(anonyGain);  
+							q.setInfoLoss(infoLoss);
+							q.setScore(score);
+							qList.add(q);
+						}
+					}	
+				}
 			}
 			
-			for(int j=0;j<rlist.size();j++) {
-				ArrayList<R> rlistCopy=deepCopy(rlist);
-				ArrayList<Integer> list=new ArrayList<>(rlist.get(j).getTrajNume().getTraj());
-				//list=rlist.get(j).getTrajNume().getTraj();//得到分子的轨迹
-				//如果用户的这条轨迹包含r中的轨迹
-				if(locList.containsAll(list)) {
-					list.removeAll(rlist.get(j).getTrajDemo().getTraj());
-					//得到敏感地点
-					int senLoc=list.get(0);
-					Op op=new Op();
-					op.setLocId(senLoc);
-					op.setTrajId(i);
-					int tag=0;
-					for(int k=0;k<qList.size();k++) {
-						if(op.equals(qList.get(k).getOp())) {
-							tag=1;
-							break;
-						}
-					}
-					if(tag==0) {
-						double anonyGain=annoyGainS(rlistCopy,senLoc,0.5,locList);
-						double infoLoss=Math.log(count)/Math.log(2);
-						double score=anonyGain/infoLoss;
-						Q q=new Q();
-						q.setOp(op);
-						q.setAnonyGain(anonyGain);  
-						q.setInfoLoss(infoLoss);
-						q.setScore(score);
-						qList.add(q);
-					}
-				}	
-			}
 		}
 	}
 	//
@@ -323,7 +363,7 @@ public class GenCand {
 		for(int k=0;k<rlistCopy.size();k++) {
 			double conf=rlistCopy.get(k).getTrajNume().getCount()/rlistCopy.get(k).getTrajDemo().getCount();
 			if(conf<=thed) {
-				System.out.println("conf<thed其值为："+conf);
+				//System.out.println("conf<thed其值为："+conf);
 				annoyGain=annoyGain+1;
 			}
 			else {
@@ -357,16 +397,13 @@ public class GenCand {
 		return locList.size();
 	}
 	public ArrayList<Q> getQList(ArrayList<Traj> trajList) throws ClassNotFoundException, IOException {
-//		for(int i=0;i<trajList.size();i++) {
-//			//getGencand(trajList.get(i).getLvList(), 0.032424025, 2);
-//		}
 		suppress(trajList);
-		getGencand( trajList,0.032424025, 2);
+		getGencand( trajList,0.032424025, 3);
 		
 		Collections.sort(qList);
-		for(int i=0;i<qList.size();i++) {
-			System.out.println("泛化操作{:轨迹"+qList.get(i).getOp().getTrajId()+","+qList.get(i).getOp().getLocId()+","+qList.get(i).getOp().getGenLoc()+"}"+"匿名收益："+qList.get(i).getAnonyGain()+"信息损失："+qList.get(i).getInfoLoss()+"分数："+qList.get(i).getScore());
-		}
+//		for(int i=0;i<qList.size();i++) {
+//			System.out.println("泛化操作{:轨迹"+qList.get(i).getOp().getTrajId()+","+qList.get(i).getOp().getLocId()+","+qList.get(i).getOp().getGenLoc()+"}"+"匿名收益："+qList.get(i).getAnonyGain()+"信息损失："+qList.get(i).getInfoLoss()+"分数："+qList.get(i).getScore());
+//		}
 		return qList;
 	}
 	//进行list的深拷贝
